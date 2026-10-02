@@ -17,7 +17,6 @@ query ──► (rewrite) ──► BM25 ──┐
 | hybrid (own RRF)   | 0.7085  | 0.8149    | 0.6804 |
 | langchain_ensemble | 0.7085  | 0.8149    | 0.6804 |
 | hybrid_rerank      | 0.6965  | 0.8289    | 0.6642 |
-| full (+ rewriting) | not run | not run   | not run |
 
 **Analysis:**
 - Dense retrieval beats BM25 by about 6 nDCG points (0.652 → 0.713), as SciFact claims are paraphrased relative to the abstracts.
