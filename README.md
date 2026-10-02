@@ -10,16 +10,21 @@ query ──► (rewrite) ──► BM25 ──┐
 
 ## Results (BEIR SciFact, test split)
 
-| method        | nDCG@10 | Recall@10 | MRR@10 |
-|---------------|---------|-----------|--------|
-| bm25          | TODO    | TODO      | TODO   |
-| dense         | TODO    | TODO      | TODO   |
-| hybrid (own RRF) | TODO | TODO      | TODO   |
-| langchain_ensemble | TODO | TODO   | TODO   |
-| hybrid_rerank | TODO    | TODO      | TODO   |
-| full          | TODO    | TODO      | TODO   |
+| method             | nDCG@10 | Recall@10 | MRR@10 |
+|--------------------|---------|-----------|--------|
+| bm25               | 0.6519  | 0.7740    | 0.6186 |
+| dense (BGE-small)  | **0.7127** | **0.8362** | **0.6822** |
+| hybrid (own RRF)   | 0.7085  | 0.8149    | 0.6804 |
+| langchain_ensemble | 0.7085  | 0.8149    | 0.6804 |
+| hybrid_rerank      | 0.6965  | 0.8289    | 0.6642 |
+| full (+ rewriting) | not run | not run   | not run |
 
-**Analysis:** TODO (which stage helped most, where BM25 beat dense, whether rewriting helped).
+**Analysis:**
+- Dense retrieval beats BM25 by about 6 nDCG points (0.652 → 0.713), as SciFact claims are paraphrased relative to the abstracts.
+- Hybrid fusion did not beat dense alone (0.7085 vs 0.7127): BM25 is the weaker retriever here, so equal-weight RRF pulls the ranking slightly down.
+- LangChain's `EnsembleRetriever` matches the from-scratch RRF exactly on every metric, which validates the implementation in `src/fusion.py`.
+- The cross-encoder reranker lowered nDCG (0.7085 → 0.6965). Likely cause: `ms-marco-MiniLM` is trained on web-search question/passage pairs, not scientific claim verification. A domain-matched reranker would be the next thing to try.
+- Query rewriting was not evaluated.
 
 ## LangChain comparison
 
