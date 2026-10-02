@@ -1,0 +1,13 @@
+beir
+rank_bm25
+sentence-transformers
+numpy
+pandas
+tabulate
+anthropic
+python-dotenv
+streamlit
+tqdm
+langchain
+langchain-core
+langchain-classic
